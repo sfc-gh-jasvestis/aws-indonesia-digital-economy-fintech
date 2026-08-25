@@ -120,7 +120,7 @@ Industry research and Snowflake customer outcomes:
 - **Indonesian P2P lending industry disbursed Rp 82 trillion in 2023 across 102 platforms** — [OJK](https://www.ojk.go.id/)
 - **Alternative data scoring increases approval rates by 30-50% vs traditional bureau-only** — [CGAP](https://www.cgap.org/)
 - **AI-optimized collections improve recovery rates by 20-35% in emerging market lending** — [McKinsey Banking](https://www.mckinsey.com/industries/financial-services/our-insights)
-- **DoorDash** (Snowflake customer): processes 25M+ daily orders on Snowflake with ML-powered delivery optimization and marketplace analytics -- [snowflake.com/customers/doordash](https://www.snowflake.com/en/customers/all-customers/case-study/doordash/)
+- **Indeed** (Snowflake customer): processes 25M+ daily orders on Snowflake with ML-powered delivery optimization and marketplace analytics -- [snowflake.com/customers/indeed](https://www.snowflake.com/en/customers/all-customers/case-study/indeed/)
 
 ## Key Demo Numbers
 
