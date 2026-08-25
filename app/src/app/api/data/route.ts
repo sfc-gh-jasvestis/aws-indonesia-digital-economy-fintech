@@ -1,33 +1,48 @@
 import { NextResponse } from 'next/server';
+import { executeQuery } from '@/lib/snowflake';
 
 export async function GET() {
-  // Placeholder data - in production, this queries Snowflake via the connector
-  return NextResponse.json({
-    timeseries: Array.from({ length: 30 }, (_, i) => ({
-      period: `Day ${i + 1}`,
-      value: Math.round(80 + Math.random() * 20),
-    })),
-    categories: [
-      { category: 'Category A', count: 45 },
-      { category: 'Category B', count: 32 },
-      { category: 'Category C', count: 28 },
-      { category: 'Category D', count: 15 },
-    ],
-    entities: Array.from({ length: 10 }, (_, i) => ({
-      id: `ENT-${String(i + 1).padStart(3, '0')}`,
-      name: `Entity ${i + 1}`,
-      status: ['HEALTHY', 'HEALTHY', 'WARNING', 'CRITICAL'][Math.floor(Math.random() * 4)],
-      value: `$${Math.round(Math.random() * 1000)}K`,
-    })),
-    detail: Array.from({ length: 14 }, (_, i) => ({
-      x: `Day ${i + 1}`,
-      y: Math.round(70 + Math.random() * 30),
-    })),
-    breakdown: [
-      { label: 'Type A', value: 42 },
-      { label: 'Type B', value: 28 },
-      { label: 'Type C', value: 18 },
-      { label: 'Type D', value: 12 },
-    ],
-  });
+  try {
+    // Portfolio KPIs
+    const kpis = await executeQuery<Record<string, number>>(`
+      SELECT
+  ROUND(SUM(TOTAL_DISBURSED_B), 1) AS TOTAL_DISBURSED_B,
+  SUM(TOTAL_LOANS) AS TOTAL_LOANS,
+  ROUND(AVG(NPL_RATE), 2) AS OVERALL_NPL,
+  ROUND(AVG(AVG_INTEREST_RATE), 1) AS AVG_RATE
+FROM CURATED.LOAN_PORTFOLIO_HEALTH
+    `);
+
+    // Trend data (last 12 weeks)
+    const trend = await executeQuery<{ PERIOD: string; CATEGORY: string; VALUE: number }>(`
+      SELECT WEEK_START AS PERIOD, PRODUCT_TYPE AS CATEGORY, DISBURSED_M AS VALUE
+FROM CURATED.DISBURSEMENT_TREND
+WHERE WEEK_START >= DATEADD('week', -12, CURRENT_DATE())
+ORDER BY WEEK_START
+    `);
+
+    // Transform trend into time series
+    const trendMap = new Map<string, Record<string, number>>();
+    for (const row of (trend as any[])) {
+      const period = row.PERIOD?.split('T')[0] || row.PERIOD;
+      if (!trendMap.has(period)) trendMap.set(period, {});
+      trendMap.get(period)![row.CATEGORY] = row.VALUE;
+    }
+    const timeseries = Array.from(trendMap.entries()).map(([period, vals]) => ({
+      period,
+      ...vals
+    }));
+
+    return NextResponse.json({
+      kpis: (kpis as any[])[0] || {},
+      timeseries,
+      updatedAt: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Data fetch error:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch data', details: String(error) },
+      { status: 500 }
+    );
+  }
 }
