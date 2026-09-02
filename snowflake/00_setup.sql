@@ -1,16 +1,13 @@
--- ============================================================================
--- Fintech Lending Analytics
--- Alternative credit scoring for Indonesia's 92M unbanked population — ML.FORECAST predicts repayment trajectories, Dynamic Tables build real-time loan portfolios, and Cortex AI generates collection strategies.
--- ============================================================================
-USE ROLE ACCOUNTADMIN;
-CREATE DATABASE IF NOT EXISTS FINTECH_LENDING;
-CREATE WAREHOUSE IF NOT EXISTS FINTECH_WH WAREHOUSE_SIZE = 'MEDIUM' AUTO_SUSPEND = 120 AUTO_RESUME = TRUE;
-USE DATABASE FINTECH_LENDING;
-CREATE SCHEMA IF NOT EXISTS RAW;
-CREATE SCHEMA IF NOT EXISTS CURATED;
-CREATE SCHEMA IF NOT EXISTS ML;
-CREATE SCHEMA IF NOT EXISTS AI;
-CREATE SCHEMA IF NOT EXISTS SEARCH;
-CREATE SCHEMA IF NOT EXISTS APP;
+-- Generated from generator/demo_specs/aws-indonesia-digital-economy-fintech.json
+-- Regenerate with: python3 generator/gen_repo_docs.py aws-indonesia-digital-economy-fintech
+-- This is the schema that is actually deployed for ID_DIGITAL_ECONOMY_FINTECH.
 
-USE WAREHOUSE FINTECH_WH;
+-- ID_DIGITAL_ECONOMY_FINTECH  (Fintech Lending Analytics)
+-- generated from generator/demo_specs/aws-indonesia-digital-economy-fintech.json - do not hand-edit
+CREATE DATABASE IF NOT EXISTS ID_DIGITAL_ECONOMY_FINTECH;
+CREATE SCHEMA IF NOT EXISTS ID_DIGITAL_ECONOMY_FINTECH.RAW;
+CREATE SCHEMA IF NOT EXISTS ID_DIGITAL_ECONOMY_FINTECH.CURATED;
+CREATE SCHEMA IF NOT EXISTS ID_DIGITAL_ECONOMY_FINTECH.APP;
+USE DATABASE ID_DIGITAL_ECONOMY_FINTECH;
+
+-- 5 real regions; entity names carry their region so the two always agree
