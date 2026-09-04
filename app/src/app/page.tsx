@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="indonesia"
+            labels={{ entity: 'Products', event: 'Repayments', alert: 'Defaults' }}
             regions={data?.regions}
             markers={[{"label": "Jakarta", "value": "HQ: ops center", "color": "blue", "size": "lg"}, {"label": "Surabaya", "value": "Hub: high volume", "color": "green", "size": "md"}, {"label": "Bandung", "value": "Fulfillment center", "color": "green", "size": "md"}, {"label": "Semarang", "value": "Distribution hub", "color": "green", "size": "sm"}]}
             routes={[{"from": "Jakarta", "to": "Surabaya", "color": "#29B5E8"}, {"from": "Jakarta", "to": "Bandung", "color": "#10B981"}]}
@@ -84,8 +85,13 @@ export default function HomePage() {
         columns={[
           { key: 'id', header: '#' },
           { key: 'name', header: 'Product' },
+          { key: 'region', header: 'Region' },
           { key: 'status', header: 'Risk Level' },
-          { key: 'value', header: 'AUM (Rp T)' },
+          { key: 'm1', header: 'AUM (Rp T)' },
+          { key: 'm2', header: 'Approval Rate' },
+          { key: 'm3', header: 'Ticket Size' },
+          { key: 'events', header: 'Repayments' },
+          { key: 'alerts', header: 'Defaults' },
         ]}
         data={data?.entities || []}
         title="Product Portfolio Health"
